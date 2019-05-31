@@ -1,0 +1,9 @@
+[package]
+name = "sinking-fund"
+version = "0.1.0"
+authors = ["Ethan Kent <ekent@jd11.law.harvard.edu>"]
+edition = "2018"
+
+[dependencies]
+diesel = { version = "1.4.2", features = ["postgres"] }
+dotenv = "0.14.1"
