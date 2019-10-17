@@ -3,7 +3,7 @@ table! {
         id -> Int4,
         name -> Text,
         start_date -> Date,
-        end_date -> Date,
+        end_date -> Nullable<Date>,
         created_at -> Timestamp,
         updated_at -> Timestamp,
     }
