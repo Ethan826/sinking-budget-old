@@ -1,6 +1,8 @@
 pub mod budget;
 pub mod category;
 pub mod contribution;
+pub mod expenditure;
+pub mod expenditure_kind;
 pub mod user;
 
 #[cfg(test)]
