@@ -21,10 +21,11 @@ pub struct Budget {
 }
 
 #[cfg(test)]
-mod test {
+pub(super) mod test {
     use super::*;
     use crate::models::test::run_in_transaction;
 
+    use crate::schema::budgets::dsl::*;
     use diesel::prelude::*;
 
     impl From<Budget> for NewBudget {
@@ -39,8 +40,6 @@ mod test {
 
     #[test]
     fn test_budget_db_round_trip() {
-        use crate::schema::budgets::dsl::*;
-
         run_in_transaction(&|conn| {
             let mut budget = NewBudget {
                 name: "Ethan's Budget".into(),
@@ -60,5 +59,17 @@ mod test {
 
             Ok(())
         });
+    }
+
+    pub fn mock_budget(conn: &PgConnection) -> Result<i32, diesel::result::Error> {
+        let budget = NewBudget {
+            name: "Ethan's Budget".into(),
+            ..Default::default()
+        };
+
+        Ok(diesel::insert_into(budgets)
+            .values(&budget)
+            .returning(crate::schema::budgets::dsl::id)
+            .get_result(conn)?)
     }
 }

@@ -24,9 +24,8 @@ pub struct Contribution {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::models::budget::NewBudget;
+    use crate::models::budget::test::mock_budget;
     use crate::models::test::*;
-    use crate::schema::budgets::dsl::*;
     use crate::schema::contributions::dsl::*;
     use diesel::prelude::*;
 
@@ -41,23 +40,11 @@ mod test {
         }
     }
 
-    fn create_budget(conn: &PgConnection) -> Result<i32, diesel::result::Error> {
-        let budget = NewBudget {
-            name: "Ethan's Budget".into(),
-            ..Default::default()
-        };
-
-        Ok(diesel::insert_into(budgets)
-            .values(&budget)
-            .returning(crate::schema::budgets::dsl::id)
-            .get_result(conn)?)
-    }
-
     #[test]
     fn test_contribution_db_round_trip() {
         run_in_transaction(&|conn| {
             let contribution = NewContribution {
-                budget_id: create_budget(conn)?,
+                budget_id: mock_budget(conn)?,
                 amount: 1000,
                 planned_date: NaiveDate::from_ymd(1981, 8, 26),
                 actual_date: None,

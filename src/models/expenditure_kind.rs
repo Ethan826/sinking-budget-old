@@ -16,9 +16,10 @@ pub struct ExpenditureKind {
 }
 
 #[cfg(test)]
-mod test {
+pub(super) mod test {
     use super::*;
     use crate::models::test::run_in_transaction;
+    use crate::schema::expenditure_kinds::dsl::*;
 
     use diesel::prelude::*;
 
@@ -30,8 +31,6 @@ mod test {
 
     #[test]
     fn test_expenditure_kind_db_round_trip() {
-        use crate::schema::expenditure_kinds::dsl::*;
-
         run_in_transaction(&|conn| {
             let expenditure_kind = NewExpenditureKind {
                 name: "Ethan's ExpenditureKind".into(),
@@ -45,5 +44,17 @@ mod test {
 
             Ok(())
         });
+    }
+
+    pub fn mock_expenditure_kind(conn: &PgConnection) -> Result<i32, diesel::result::Error> {
+        let expenditure_kind = NewExpenditureKind {
+            name: "Ethan's Expenditure Kind".into(),
+            ..Default::default()
+        };
+
+        Ok(diesel::insert_into(expenditure_kinds)
+            .values(&expenditure_kind)
+            .returning(crate::schema::expenditure_kinds::dsl::id)
+            .get_result(conn)?)
     }
 }

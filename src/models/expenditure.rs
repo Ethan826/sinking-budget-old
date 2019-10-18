@@ -27,6 +27,7 @@ pub struct Expenditure {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::models::budget::test::mock_budget;
     use crate::models::test::run_in_transaction;
 
     use diesel::prelude::*;
@@ -45,6 +46,7 @@ mod test {
 
     #[test]
     fn test_expenditure_db_round_trip() {
+        use crate::models::expenditure_kind::test::mock_expenditure_kind;
         use crate::schema::expenditures::dsl::*;
 
         run_in_transaction(&|conn| {
@@ -52,8 +54,8 @@ mod test {
                 planned_date: NaiveDate::from_ymd(1981, 8, 26),
                 actual_date: None,
                 amount: 500,
-                expenditure_kind_id: 3,
-                budget_id: 7,
+                expenditure_kind_id: mock_expenditure_kind(conn)?,
+                budget_id: mock_budget(conn)?,
             };
 
             let committed_value = diesel::insert_into(expenditures)

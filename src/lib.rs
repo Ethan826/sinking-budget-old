@@ -6,6 +6,13 @@ use chrono::{NaiveDate, NaiveDateTime};
 pub mod models;
 pub(crate) mod schema;
 
+// The following structs define many-to-many relationships and so probably will
+// not be in-memory objects. They are preserved here while driving to MVP for
+// convenience's sake. 
+// 
+// TODO: Implement or delete.
+
+/*
 #[derive(Queryable, Debug)]
 pub struct BudgetCategory {
     pub id: i32,
@@ -26,3 +33,4 @@ pub struct UsersBudgets {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
+*/
