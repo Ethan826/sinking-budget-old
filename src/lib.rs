@@ -41,14 +41,6 @@ pub struct Expenditures {
 }
 
 #[derive(Queryable, Debug)]
-pub struct Users {
-    pub id: i32,
-    pub name: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
-}
-
-#[derive(Queryable, Debug)]
 pub struct UsersBudgets {
     pub user_id: i32,
     pub budget_id: i32,

@@ -1,6 +1,7 @@
 pub mod budget;
 pub mod category;
 pub mod contribution;
+pub mod user;
 
 #[cfg(test)]
 mod test {
