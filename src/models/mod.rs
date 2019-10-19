@@ -18,10 +18,10 @@ mod test {
 
         let database_url = env::var("TEST_DATABASE_URL").expect("TEST_DATABASE_URL must be set");
         PgConnection::establish(&database_url)
-            .expect(&format!("Error connecting to {}", database_url))
+            .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
     }
 
-    pub(super) fn run_in_transaction(myfn: &Fn(&PgConnection) -> Result<(), Error>) {
+    pub(super) fn run_in_transaction(myfn: &dyn Fn(&PgConnection) -> Result<(), Error>) {
         let conn = establish_connection();
 
         conn.test_transaction::<_, Error, _>(|| myfn(&conn))

@@ -49,7 +49,6 @@ pub(super) mod test {
     pub fn mock_expenditure_kind(conn: &PgConnection) -> Result<i32, diesel::result::Error> {
         let expenditure_kind = NewExpenditureKind {
             name: "Ethan's Expenditure Kind".into(),
-            ..Default::default()
         };
 
         Ok(diesel::insert_into(expenditure_kinds)
