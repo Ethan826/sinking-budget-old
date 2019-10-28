@@ -1,9 +1,46 @@
+use crate::models::budget::{Budget, NewBudget};
+use chrono::{NaiveDate, Utc};
+use juniper::{FieldResult, RootNode};
+
 pub mod budget;
 pub mod category;
 pub mod contribution;
 pub mod expenditure;
 pub mod expenditure_kind;
 pub mod user;
+
+pub struct QueryRoot;
+
+graphql_object!(QueryRoot: () |&self| {
+    field budget(&executor, id: i32) -> FieldResult<Budget> {
+        Ok(Budget{
+            id: 1,
+            name: "Ethan".into(),
+            start_date: NaiveDate::from_ymd(1981, 8, 26),
+            end_date: Some(NaiveDate::from_ymd(1981, 8, 26)),
+            created_at: Utc::now().naive_utc(),
+            updated_at: Utc::now().naive_utc(),
+        })
+    }
+});
+
+pub struct MutationRoot;
+
+graphql_object!(MutationRoot: () |&self| {
+    field createBudget(&executor, new_budget: NewBudget) -> FieldResult<NewBudget> {
+            Ok(new_budget)
+    }
+});
+
+pub type Schema = RootNode<'static, QueryRoot, MutationRoot>;
+
+pub fn create_schema() -> Schema {
+    Schema::new(QueryRoot {}, MutationRoot {})
+}
+
+// =================================================================================================
+// Tests
+// =================================================================================================
 
 #[cfg(test)]
 mod test {

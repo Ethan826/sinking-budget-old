@@ -2,15 +2,17 @@ use chrono::{NaiveDate, NaiveDateTime};
 
 use crate::schema::budgets;
 
-#[derive(Queryable, Debug, Default, Insertable, PartialEq)]
+#[derive(Queryable, Debug, Default, Insertable, PartialEq, GraphQLInputObject)]
 #[table_name = "budgets"]
+#[graphql(description = "A budget")]
 pub struct NewBudget {
     pub name: String,
     pub start_date: Option<NaiveDate>,
     pub end_date: Option<NaiveDate>,
 }
 
-#[derive(Queryable, Debug, PartialEq)]
+#[derive(Queryable, Debug, PartialEq, GraphQLObject)]
+#[graphql(description = "A budget")]
 pub struct Budget {
     pub id: i32,
     pub name: String,
@@ -19,6 +21,10 @@ pub struct Budget {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
+
+// =================================================================================================
+// Tests
+// =================================================================================================
 
 #[cfg(test)]
 pub(super) mod test {
