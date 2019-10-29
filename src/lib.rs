@@ -1,10 +1,19 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+
 #[macro_use]
 extern crate diesel;
 #[macro_use]
 extern crate juniper;
+#[macro_use]
+extern crate rocket_contrib;
+
+use rocket_contrib::databases::diesel::PgConnection;
 
 pub mod models;
 pub(crate) mod schema;
+
+#[database("sinking-fund")]
+struct DbConn(PgConnection);
 
 // The following structs define many-to-many relationships and so probably will
 // not be in-memory objects. They are preserved here while driving to MVP for
